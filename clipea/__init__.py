@@ -4,8 +4,8 @@
 
 import os
 import sys
-from clipea import utils, cli
 from loguru import logger as log
+from clipea import utils, cli
 
 # set default log level to INFO
 log.remove()

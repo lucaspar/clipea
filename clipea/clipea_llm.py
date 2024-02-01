@@ -6,9 +6,10 @@ import os
 import sys
 import llm.cli
 import llm
+from loguru import logger as log
+
 import clipea.cli
 from clipea import ENV, HOME_PATH, CLIPEA_DIR, utils
-from loguru import logger as log
 
 
 def init_llm(llm_model: str = "") -> llm.Model:
@@ -70,7 +71,7 @@ def stream_commands(response: llm.Response, command_prefix: str = "") -> None:
                 cmd_unapproved, shell=ENV["shell"]
             )
         if output_file is not None:
-            cmd_to_add: str # command to add to the output file
+            cmd_to_add: str  # command to add to the output file
             if sys.stdin.isatty():
                 if not cmd_executed:
                     return  # no command was approved and executed
@@ -101,11 +102,12 @@ def stream_commands(response: llm.Response, command_prefix: str = "") -> None:
 
     if output_file:
         cmd_lines = approved_cmd_list.rstrip(os.linesep).split(os.linesep)
-        cmd_lines = [cmd for cmd in cmd_lines if cmd] # remove empty lines
+        cmd_lines = [cmd for cmd in cmd_lines if cmd]  # remove empty lines
         log.debug(f"Writing {len(cmd_lines)} lines to {output_file}")
         utils.write_to_file(
             output_file,
             ";".join(
                 cmd_lines,
-            ) + os.linesep,
+            )
+            + os.linesep,
         )

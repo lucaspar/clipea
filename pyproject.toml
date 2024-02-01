@@ -1,0 +1,17 @@
+[tool.poetry]
+    authors     = ["Your Name <you@example.com>"]
+    description = ""
+    name        = "clipea"
+    readme      = "README.md"
+    version     = "0.1.0"
+
+    [tool.poetry.dependencies]
+        llm        = "^0.12"
+        loguru     = "^0.7.2"
+        python     = "^3.11"
+        setuptools = "^69.0.3"
+
+
+[build-system]
+    build-backend = "poetry.core.masonry.api"
+    requires      = ["poetry-core"]
