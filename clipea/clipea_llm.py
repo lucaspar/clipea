@@ -71,12 +71,11 @@ def stream_commands(response: llm.Response, command_prefix: str = "") -> None:
                 cmd_unapproved, shell=ENV["shell"]
             )
         if output_file is not None:
-            cmd_to_add: str  # command to add to the output file
+            cmd_to_add: str = cmd_unapproved
             if sys.stdin.isatty():
                 if not cmd_executed:
                     return  # no command was approved and executed
                 cmd_to_add = cmd_executed
-            cmd_to_add = cmd_unapproved
             log.debug("Adding to command list: ", cmd_to_add)
             approved_cmd_list += cmd_to_add + os.linesep
 
