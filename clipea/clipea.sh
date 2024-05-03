@@ -23,23 +23,24 @@ CLIPEA_TMP_FILE=$(mktemp)
 
 # get this script's directory
 CLIPEA_SCRIPT_DIR=$(dirname "$0")
-CLIPEA_PATH=$(command -v clipea)
-CLIPEA_PYTHON=
+CLIPEA_PATH=$(which clipea)
+CLIPEA_PYTHON=$(poetry -C "${CLIPEA_SCRIPT_DIR}" run which python || which python3 || which python)
 
 # run clipea from the current dir if possible
 if [[ -f ${CLIPEA_SCRIPT_DIR}/__main__.py ]]; then
     CLIPEA_PATH=${CLIPEA_SCRIPT_DIR}
-    CLIPEA_PYTHON=$(command -v python3 || command -v python)
 fi
 
 # check IS_DEBUG
 if [[ ${IS_DEBUG} -eq 1 ]]; then
+    echo "CLIPEA_PATH=${CLIPEA_PATH}"
+    echo "CLIPEA_PYTHON=${CLIPEA_PYTHON}"
     echo "CLIPEA_TMP_FILE=${CLIPEA_TMP_FILE}"
     tail -f "${CLIPEA_TMP_FILE}" &
 fi
 
 # execute clipea with an environment variable
-CLIPEA_CMD_OUTPUT_FILE="${CLIPEA_TMP_FILE}" "${CLIPEA_PYTHON}" "${CLIPEA_PATH}" "$@"
+CLIPEA_CMD_OUTPUT_FILE="${CLIPEA_TMP_FILE}" ${CLIPEA_PYTHON} "${CLIPEA_PATH}" "$@"
 
 # read the command to be placed on the Bash command line
 num_lines_to_save=$(grep -cv '^$' "${CLIPEA_TMP_FILE}")

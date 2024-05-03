@@ -6,10 +6,10 @@
     version     = "0.1.0"
 
     [tool.poetry.dependencies]
-        llm        = "^0.12"
+        llm        = "^0.13"
         loguru     = "^0.7.2"
-        python     = "^3.11"
-        setuptools = "^69.0.3"
+        python     = "^3.12"
+        setuptools = "^69.5"
 
 
 [build-system]
