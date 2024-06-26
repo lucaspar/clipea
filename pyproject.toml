@@ -4,6 +4,7 @@
     name        = "clipea"
     readme      = "README.md"
     version     = "0.1.0"
+    package-mode = true
 
     [tool.poetry.dependencies]
         llm        = "^0.13"
