@@ -23,7 +23,7 @@ CLIPEA_TMP_FILE=$(mktemp)
 
 # get this script's directory
 CLIPEA_SCRIPT_DIR=$(dirname "$0")
-CLIPEA_PATH=$(which clipea)
+CLIPEA_PATH=$(which clipea 2>/dev/null || echo "")
 CLIPEA_PYTHON=$(poetry -C "${CLIPEA_SCRIPT_DIR}" run which python || which python3 || which python)
 
 # run clipea from the current dir if possible
