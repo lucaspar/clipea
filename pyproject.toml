@@ -1,10 +1,6 @@
 [project]
     authors         = [{ name = "Lucas" }]
-    dependencies    = [
- "llm>=0.16",
- "loguru>=0.7.2",
- "setuptools>=74.1.2",
-]
+    dependencies    = ["llm>=0.16", "loguru>=0.7.2", "setuptools>=74.1.2"]
     description     = ""
     name            = "clipea"
     readme          = "README.md"
