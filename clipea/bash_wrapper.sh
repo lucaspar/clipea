@@ -36,11 +36,11 @@ function clipea_wrapper() {
         echo "Running Clipea with args: ${args[*]}"
     fi
     if [[ ${CLIPEA_SOURCE_DEBUG} -eq 1 ]]; then
-        poetry -C "${CLIPEA_HOME}" install --sync --only main
-        poetry run -C "${CLIPEA_HOME}" "${CLIPEA_HOME}/clipea/clipea.sh" --debug "${args[@]}"
+        uv --directory "${CLIPEA_HOME}" sync
+        uv --directory "${CLIPEA_HOME}" run "${CLIPEA_HOME}/clipea/clipea.sh" --debug "${args[@]}"
     else
-        poetry -C "${CLIPEA_HOME}" install --quiet --sync --only main
-        poetry run -C "${CLIPEA_HOME}" "${CLIPEA_HOME}/clipea/clipea.sh" "${args[@]}"
+        uv --directory "${CLIPEA_HOME}" sync
+        uv --directory "${CLIPEA_HOME}" run "${CLIPEA_HOME}/clipea/clipea.sh" "${args[@]}"
     fi
 
     if [[ ${CLIPEA_SOURCE_DEBUG} -eq 1 ]]; then
