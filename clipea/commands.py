@@ -4,29 +4,16 @@ Commands with a bit more logic than a few lines are stored there
 
 import json
 import sys
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from llm import UnknownModelError
 
-from clipea import CLIPEA_DIR, ENV, SYSTEM_PROMPT, cli
+from clipea import CLIPEA_DIR, CONFIG, ENV, SYSTEM_PROMPT, cli
 
 if TYPE_CHECKING:
     from pathlib import Path
 
     from llm import Model, Response
-
-COMMAND_PREFIX: str = "🟢 "
-
-
-@dataclass
-class ClipeaConfig:
-    """Configuration class for clipea"""
-
-    llm_model_name: str = "gpt-4o"
-
-
-config: ClipeaConfig = ClipeaConfig()
 
 
 def setup() -> None:
@@ -79,7 +66,7 @@ def clipea_execute_prompt(user_prompt: str, llm_model_name: str) -> None:
         system=SYSTEM_PROMPT,
         prompt=user_prompt + (("\n~~~DATA~~~\n" + user_data) if user_data else ""),
     )
-    clipea_llm.stream_commands(response, command_prefix=COMMAND_PREFIX)
+    clipea_llm.stream_commands(response, command_prefix=CONFIG.command_prefix)
 
 
 def alias() -> None:
@@ -92,7 +79,7 @@ def alias() -> None:
             watching out for quotes and escaping, then explain how"
             f"to manually source it: {command}"
         )
-        clipea_execute_prompt(user_prompt, llm_model_name=config.llm_model_name)
+        clipea_execute_prompt(user_prompt, llm_model_name=CONFIG.llm_model_name)
     if shell in ("bash", "-bash"):
         command = (
             "CLIPEA_HOME= # where you cloned this repo"
@@ -103,7 +90,7 @@ def alias() -> None:
             watching out for quotes and escaping, then explain how"
             f"to manually source it: {command}"
         )
-        clipea_execute_prompt(user_prompt, llm_model_name=config.llm_model_name)
+        clipea_execute_prompt(user_prompt, llm_model_name=CONFIG.llm_model_name)
     else:
         print(
             f"`alias` feature is only for zsh and bash users. Current shell = {shell}",

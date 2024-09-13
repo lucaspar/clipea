@@ -5,6 +5,7 @@
 
 import os
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 from loguru import logger as log
@@ -14,6 +15,14 @@ from clipea import cli, utils
 # set default log level to INFO
 log.remove()
 log.add(sys.stderr, level="INFO")
+
+
+@dataclass
+class ClipeaConfig:
+    """Configuration class for clipea"""
+
+    llm_model_name: str = "gpt-4o"
+    command_prefix: str = "🟢 "
 
 
 CLIPEA_DIR: Path = Path(__file__).parent
@@ -30,3 +39,4 @@ ENV: dict[str, str] = {
 }
 log.trace(f"ENV: {ENV}")
 SYSTEM_PROMPT: str = utils.read_file(SYSTEM_PROMPT_FILE) + str(ENV)
+CONFIG: ClipeaConfig = ClipeaConfig()

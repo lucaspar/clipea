@@ -5,7 +5,7 @@ Base application logic
 import sys
 from pprint import pprint
 
-from clipea import ENV, USAGE_FILE_PATH, commands, utils
+from clipea import CONFIG, ENV, USAGE_FILE_PATH, commands, utils
 
 
 def commands_router(user_prompt: str) -> None:
@@ -28,4 +28,7 @@ def commands_router(user_prompt: str) -> None:
         case "-h" | "--help" | "help":
             print(utils.read_file(USAGE_FILE_PATH))
         case _:
-            commands.clipea_execute_prompt(user_prompt)
+            commands.clipea_execute_prompt(
+                user_prompt,
+                llm_model_name=CONFIG.llm_model_name,
+            )
