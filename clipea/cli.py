@@ -2,12 +2,14 @@
 Interactions with the terminal
 """
 
-import readline
 import os
-import sys
-import subprocess
+import readline
 import shutil
+import subprocess
+import sys
+from pathlib import Path
 from typing import Optional
+
 from loguru import logger as log
 
 
@@ -21,9 +23,12 @@ def get_input(max_len: int = 1 << 13) -> str:
     if not sys.stdin.isatty():
         data = input()
     if len(data) > max_len:
-        raise ValueError(
+        msg = (
             f"Error: Input too long! Maximum {max_len} characters allowed.             "
             f"    Try limiting your input using 'head -c {max_len} file.txt"
+        )
+        raise ValueError(
+            msg,
         )
     return data
 
@@ -46,7 +51,7 @@ def get_current_shell() -> str:
     # the script that invoked it, not the shell that is running. In this case,
     # we fallback to the preferred user shell, indicated by the env var $SHELL:
     if current_shell not in available_shells:
-        current_shell = os.path.basename(os.environ.get("SHELL", fallback_shell_path))
+        current_shell = Path(os.environ.get("SHELL", fallback_shell_path)).name
     log.debug(f"Current shell: {current_shell}")
     return current_shell
 
@@ -59,14 +64,15 @@ def find_shell(shell_name: str) -> str | None:
         path to the shell, or None if not found
     """
     if shutil.which(shell_name) is None:
-        raise ValueError(f"Error: {shell_name} not found in PATH")
+        msg = f"Error: {shell_name} not found in PATH"
+        raise ValueError(msg)
     return shutil.which(shell_name)
 
 
-def edit_cmd(innacurate_cmd: str) -> str:
+def edit_cmd(innaccurate_cmd: str) -> str:
     """Lets the user modify a command and returns it."""
     # Set the default text as the pre-fill for readline
-    readline.set_startup_hook(lambda: readline.insert_text(innacurate_cmd))
+    readline.set_startup_hook(lambda: readline.insert_text(innaccurate_cmd))
 
     try:
         # The user can now edit the command and press Enter to submit
@@ -95,8 +101,9 @@ def execute_after_approval(dirty_cmd: str, shell: Optional[str] = None) -> str |
         return None
 
     # confirms with user
-    answer = input("\033[0;36mExecute [y/N] or [e]dit? \033[0m").strip().lower()
-    answer = "n" if not answer else answer # default is "don't execute"
+    print("\033[0;36mExecute [y/N] or [e]dit? \033[0m", end="")
+    answer = input().strip().lower()
+    answer = answer if answer else "n"  # default is "don't execute"
 
     # abort if not [y]es or [e]dit
     if answer not in "ye":

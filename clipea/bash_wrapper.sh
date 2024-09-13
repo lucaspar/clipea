@@ -36,10 +36,10 @@ function clipea_wrapper() {
         echo "Running Clipea with args: ${args[*]}"
     fi
     if [[ ${CLIPEA_SOURCE_DEBUG} -eq 1 ]]; then
-        uv --directory "${CLIPEA_HOME}" sync
+        uv --directory "${CLIPEA_HOME}" sync --quiet
         uv --directory "${CLIPEA_HOME}" run "${CLIPEA_HOME}/clipea/clipea.sh" --debug "${args[@]}"
     else
-        uv --directory "${CLIPEA_HOME}" sync
+        uv --directory "${CLIPEA_HOME}" sync --quiet
         uv --directory "${CLIPEA_HOME}" run "${CLIPEA_HOME}/clipea/clipea.sh" "${args[@]}"
     fi
 

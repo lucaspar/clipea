@@ -1,8 +1,8 @@
-"""Clipea application entry point
-"""
+"""Clipea application entry point"""
 
-import sys
 import shutil
+import sys
+
 from clipea import router
 
 

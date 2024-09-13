@@ -22,25 +22,25 @@ CLIPEA_TMP_FILE=$(mktemp)
 # trap '/bin/rm -f ${CLIPEA_TMP_FILE}' EXIT
 
 # get this script's directory
-CLIPEA_SCRIPT_DIR=$(dirname "$0")
+CLIPEA_SCRIPT_DIR="$(dirname "$0")/../"
 CLIPEA_PATH=$(which clipea 2>/dev/null || echo "")
-CLIPEA_PYTHON=$(uv --directory "${CLIPEA_SCRIPT_DIR}" run which python || which python3 || which python)
 
 # run clipea from the current dir if possible
 if [[ -f ${CLIPEA_SCRIPT_DIR}/__main__.py ]]; then
-    CLIPEA_PATH=${CLIPEA_SCRIPT_DIR}
+    CLIPEA_PATH="${CLIPEA_SCRIPT_DIR}/../"
 fi
 
 # check IS_DEBUG
 if [[ ${IS_DEBUG} -eq 1 ]]; then
     echo "CLIPEA_PATH=${CLIPEA_PATH}"
-    echo "CLIPEA_PYTHON=${CLIPEA_PYTHON}"
     echo "CLIPEA_TMP_FILE=${CLIPEA_TMP_FILE}"
+    echo ""
+    echo -e "Running Clipea with cmd line:\n\nuv --directory '${CLIPEA_SCRIPT_DIR}' run python -m clipea $*\n\n"
     tail -f "${CLIPEA_TMP_FILE}" &
 fi
 
 # execute clipea with an environment variable
-CLIPEA_CMD_OUTPUT_FILE="${CLIPEA_TMP_FILE}" ${CLIPEA_PYTHON} "${CLIPEA_PATH}" "$@"
+CLIPEA_CMD_OUTPUT_FILE="${CLIPEA_TMP_FILE}" uv --directory "${CLIPEA_SCRIPT_DIR}" run python -m clipea "$@"
 
 # read the command to be placed on the Bash command line
 num_lines_to_save=$(grep -cv '^$' "${CLIPEA_TMP_FILE}")
