@@ -4,33 +4,24 @@ Interactions with `llm` python library
 
 import os
 import sys
-import llm.cli
+from pathlib import Path
+
 import llm
+import llm.cli
 from loguru import logger as log
 
 import clipea.cli
-from clipea import ENV, HOME_PATH, CLIPEA_DIR, utils
+from clipea import ENV, utils
 
 
 def init_llm(llm_model: str = "") -> llm.Model:
     """Initialize base llm library with user's `llm_model`
-
     Args:
-        llm_model (str, optional): LLM model name (ex: "gpt-4").
-                                   Defaults to content of {clipea config}/clipea_default_model.txt.
-
+        llm_model:  LLM model name (ex: "gpt-4o").
     Returns:
         llm.Model
     """
-    clipea_default_model_path = utils.get_config_file_with_fallback(
-        home=HOME_PATH,
-        fallback=CLIPEA_DIR,
-        appname="clipea",
-        filename="clipea_default_model.txt",
-    )
-    model = llm.get_model(
-        llm_model or llm.cli.get_default_model(filename=clipea_default_model_path)
-    )
+    model = llm.get_model(llm_model)
 
     if model.needs_key:
         model.key = llm.get_key("", model.needs_key, model.key_env_var)
@@ -39,28 +30,25 @@ def init_llm(llm_model: str = "") -> llm.Model:
 
 def stream_commands(response: llm.Response, command_prefix: str = "") -> None:
     """Streams llm response which returns shell commands
-    If a valid shell commands is returned, either prompt to execute it or
-    put it in zsh's command buffer
     The processing is done internally with a nested function `process_command`
     A command is considered valid if it starts with '$ ' and is a full line of answer
 
     Args:
-        response (llm.Response): LLM's answer to user's prompt
-        command_prefix (str, optional): What to write before streaming the commands. Defaults to "".
+        response:       LLM's answer to user's prompt
+        command_prefix: What to write before streaming the commands. Defaults to "".
     """
     command: str = ""
-    output_file: str | None = os.getenv("CLIPEA_CMD_OUTPUT_FILE")
+    output_file_str: str | None = os.getenv("CLIPEA_CMD_OUTPUT_FILE")
+    output_file: Path | None = Path(output_file_str) if output_file_str else None
     approved_cmd_list: str = ""
     new_line_pos: int
 
-    def process_command():
+    def process_command() -> None:
         nonlocal command, approved_cmd_list, new_line_pos
 
-        cmd_unapproved: str
-        if new_line_pos > 0:
-            cmd_unapproved = command[2:new_line_pos]
-        else:
-            cmd_unapproved = command[2:]
+        cmd_unapproved: str = (
+            command[2:new_line_pos] if new_line_pos > 0 else command[2:]
+        )
         command = command[new_line_pos + 1 :]
 
         # if in an interactive shell, prompt the user
@@ -68,7 +56,8 @@ def stream_commands(response: llm.Response, command_prefix: str = "") -> None:
         cmd_executed = None
         if sys.stdin.isatty():
             cmd_executed = clipea.cli.execute_after_approval(
-                cmd_unapproved, shell=ENV["shell"]
+                cmd_unapproved,
+                shell=ENV["shell"],
             )
         if output_file is not None:
             cmd_to_add: str = cmd_unapproved

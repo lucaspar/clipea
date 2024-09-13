@@ -1,22 +1,27 @@
-"""Clipea application
-📎🟢 Like Clippy but for the CLI. A blazing fast AI helper for your command line
+"""Clipea application.
+
+📎🟢 Like Clippy, but for the CLI. A blazing fast AI helper for your command line.
 """
 
 import os
 import sys
+from pathlib import Path
+
 from loguru import logger as log
-from clipea import utils, cli
+
+from clipea import cli, utils
 
 # set default log level to INFO
 log.remove()
 log.add(sys.stderr, level="INFO")
 
 
-CLIPEA_DIR: str = os.path.dirname(os.path.realpath(__file__))
-USAGE_FILE_PATH: str = CLIPEA_DIR + "/usage.txt"
-HOME_PATH: str = utils.anystr_force_str(os.path.expanduser("~"))
-SYSTEM_PROMPT_FILE: str = utils.get_config_file_with_fallback(
-    home=HOME_PATH, fallback=CLIPEA_DIR, appname="clipea", filename="system-prompt.txt"
+CLIPEA_DIR: Path = Path(__file__).parent
+USAGE_FILE_PATH: Path = CLIPEA_DIR / "usage.txt"
+SYSTEM_PROMPT_FILE: Path = utils.get_config_file_with_fallback(
+    fallback=CLIPEA_DIR,
+    appname="clipea",
+    filename="system-prompt.txt",
 )
 ENV: dict[str, str] = {
     "shell": cli.get_current_shell(),

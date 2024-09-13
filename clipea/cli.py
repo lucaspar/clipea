@@ -76,7 +76,7 @@ def edit_cmd(innaccurate_cmd: str) -> str:
 
     try:
         # The user can now edit the command and press Enter to submit
-        user_approved_cmd = input("Edit, then press ENTER to run:\t")
+        user_approved_cmd = input("Edit, then press ENTER to run: ")
     finally:
         # Make sure to reset the startup hook so that future uses of
         # raw_input won't have the text inserted.

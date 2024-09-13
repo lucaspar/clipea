@@ -1,9 +1,11 @@
-"""Setup file for clipea
-"""
-from setuptools import setup, find_packages
+"""Setup file for clipea"""
 
-with open('README.md', encoding='utf-8') as f:
-    long_description = f.read()
+from pathlib import Path
+
+from setuptools import find_packages, setup
+
+with Path("README.md").open(encoding="utf-8") as fp:
+    long_description = fp.read()
 
 setup(
     name="clipea-cli",
@@ -11,10 +13,10 @@ setup(
     description=" 📎🟢 Like Clippy but for the CLI. A blazing fast AI helper for your command line ",
     url="https://github.com/dave1010/clipea/",
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     author="Dave Hulbert",
     author_email="dave1010@gmail.com",
-    keywords='cli, ai, assistant, automation',
+    keywords="cli, ai, assistant, automation",
     license="MIT",
     packages=find_packages(),
     install_requires=["llm"],
