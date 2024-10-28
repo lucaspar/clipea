@@ -51,10 +51,10 @@ def stream_commands(response: llm.Response, command_prefix: str = "") -> None:
         )
         command = command[new_line_pos + 1 :]
 
-        # if in an interactive shell, prompt the user
-        # for changes then run the command once approved.
         cmd_executed = None
         if sys.stdin.isatty():
+            # if in an interactive shell, prompt the user
+            # for changes then run the command once approved.
             cmd_executed = clipea.cli.execute_after_approval(
                 cmd_unapproved,
                 shell=ENV["shell"],
@@ -80,10 +80,10 @@ def stream_commands(response: llm.Response, command_prefix: str = "") -> None:
         else:
             command = ""
 
-    # llm CLI put a line feed manually to it's response, but not it's library
-    # We have to do this to manage the case where the model returns a
-    # non-linefeed terminated string.
-    # It also explains why there is a capturing nested function `process_command`
+    # llm's CLI put a line feed manually to its response, but not its library;
+    #   we have to do this to manage the case where the model returns a
+    #   non-linefeed terminated string.
+    #   It also explains why there is a capturing nested function process_command()
     if command.startswith("$ "):
         print()
         process_command()

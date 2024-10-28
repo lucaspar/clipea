@@ -47,6 +47,7 @@ function clipea_wrapper() {
     if [[ ${CLIPEA_SOURCE_DEBUG} -eq 1 ]]; then
         echo "Running Clipea with args: ${args[*]}"
     fi
+    export _CLIPEA_ORIGINAL_DIR="${PWD}"
     if [[ ${CLIPEA_SOURCE_DEBUG} -eq 1 ]]; then
         uv --directory "${CLIPEA_HOME}" sync --quiet
         uv --directory "${CLIPEA_HOME}" run "${CLIPEA_HOME}/clipea/clipea.sh" --debug "${args[@]}"
@@ -54,6 +55,7 @@ function clipea_wrapper() {
         uv --directory "${CLIPEA_HOME}" sync --quiet
         uv --directory "${CLIPEA_HOME}" run "${CLIPEA_HOME}/clipea/clipea.sh" "${args[@]}"
     fi
+    unset _CLIPEA_ORIGINAL_DIR
 
     if [[ ${hist_enabled} -eq 0 ]]; then
         # reload history with the executed command (if any)

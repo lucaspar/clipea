@@ -34,6 +34,8 @@ fi
 if [[ ${IS_DEBUG} -eq 1 ]]; then
     echo "CLIPEA_PATH=${CLIPEA_PATH}"
     echo "CLIPEA_TMP_FILE=${CLIPEA_TMP_FILE}"
+    echo "PWD=${PWD}"
+    echo "_CLIPEA_ORIGINAL_DIR=${_CLIPEA_ORIGINAL_DIR}"
     echo ""
     echo -e "Running Clipea with cmd line:\n\nuv --directory '${CLIPEA_SCRIPT_DIR}' run python -m clipea $*\n\n"
     tail -f "${CLIPEA_TMP_FILE}" &

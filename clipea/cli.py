@@ -110,11 +110,15 @@ def execute_after_approval(dirty_cmd: str, shell: Optional[str] = None) -> str |
         return None
 
     # enter editing mode if user wants
+    working_dir = Path(os.getenv("_CLIPEA_ORIGINAL_DIR", "."))
+    if not working_dir.exists():
+        working_dir = Path(".")
     approved_cmd = edit_cmd(dirty_cmd) if answer == "e" else dirty_cmd
     subprocess.run(
         approved_cmd,
-        shell=True,
-        executable=None if shell is None else get_current_shell(),
         check=False,
+        cwd=working_dir,
+        executable=None if shell is None else get_current_shell(),
+        shell=True,
     )
     return approved_cmd
