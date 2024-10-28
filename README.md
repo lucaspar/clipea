@@ -6,6 +6,17 @@
 
 Clipea is a streamlined, cheap and hackable tool that integrates GPT with your console.
 
+```bash
+?? generate a random 256-bit base64 string
+```
+
+```bash
+🟢 $ openssl rand -base64 32
+Execute [y/N] or [e]dit? e
+Edit, then press ENTER to run: openssl rand -hex 32
+378f05e2e92324b6da8955426c60e605ad4cf195d94bbdbe088ff39f41cf3035
+```
+
 > [!CAUTION]
 > Be careful with the commands Clipea suggests. Always read and understand them before running.
 
