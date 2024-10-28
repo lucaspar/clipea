@@ -1,5 +1,7 @@
 # Clipea 📎🟢
 
+[![Code Quality](https://github.com/lucaspar/clipea/actions/workflows/code-quality.yaml/badge.svg)](https://github.com/lucaspar/clipea/actions/workflows/code-quality.yaml)
+
 > Forked from Dave Hulbert's repository (`dave1010/clipea`). Check out their project for zsh integration and for a better out-of-the-box experience. This is a work in progress with Bash integration and a few opinionated (breaking) changes. Use it at your own risk.
 
 Clipea is a streamlined, cheap and hackable tool that integrates GPT with your console.
