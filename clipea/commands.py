@@ -28,8 +28,7 @@ def setup() -> None:
 
     if should_setup:
         print(
-            "Get an OpenAI API key from: "
-            "https://platform.openai.com/account/api-keys",
+            "Get an OpenAI API key from: https://platform.openai.com/account/api-keys",
         )
     else:
         print("An OpenAI key is already set-up, proceed if you want to change it.")
