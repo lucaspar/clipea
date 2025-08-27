@@ -34,7 +34,7 @@ Edit, then press ENTER to run: openssl rand -hex 32
 2. Configure `llm` to use the model of your choice:
 
     ```bash
-    llm models default gpt-4o
+    llm models default gpt-4.1
     llm keys set openai
     # paste your openai key from https://platform.openai.com/api-keys
     ```
