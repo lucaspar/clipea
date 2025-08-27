@@ -2,7 +2,7 @@
 
 [![Code Quality](https://github.com/lucaspar/clipea/actions/workflows/code-quality.yaml/badge.svg)](https://github.com/lucaspar/clipea/actions/workflows/code-quality.yaml)
 
-> Forked from Dave Hulbert's repository (`dave1010/clipea`). Check out their project for zsh integration and for a better out-of-the-box experience. This is a work in progress with Bash integration and a few opinionated (breaking) changes. Use it at your own risk.
+> Forked from Dave Hulbert's repository ([`dave1010/clipea`](https://github.com/dave1010/clipea)). Check out their project for zsh integration and for a better out-of-the-box experience. This is a work in progress with Bash integration and a few opinionated (breaking) changes. Use it at your own risk.
 
 Clipea is a streamlined, cheap and hackable tool that integrates GPT with your console.
 
@@ -33,10 +33,32 @@ Edit, then press ENTER to run: openssl rand -hex 32
 
 2. Configure `llm` to use the model of your choice:
 
+    Ollama example:
+
+    ```bash
+    llm install llm-ollama
+    llm models | less                       # choose a model
+    llm models default gpt-oss
+    ```
+
+    OpenAI example:
+
     ```bash
     llm models default gpt-4.1
+    llm models | less                       # choose a model
     llm keys set openai
     # paste your openai key from https://platform.openai.com/api-keys
+    ```
+
+    Anthropic example
+
+    ```bash
+    # install anthropic models
+    llm install llm-anthropic
+    llm models | less                       # choose a model
+    llm models default claude-4-sonnet
+    llm keys set anthropic
+    # paste your anthropic key from https://console.anthropic.com/settings/keys
     ```
 
 3. Add the following to your `.bashrc` or `.bash_profile`:
@@ -105,8 +127,10 @@ Run `clipea env` or `?? env` to see the data the LLM gets.
 
 ## Cost
 
-As a very rough example, using the default GPT-3.5, 100 Clipea queries to OpenAI cost $0.02.
-Set a quota and keep an eye on costs to make sure.
++ [OpenAI API pricing](https://openai.com/api/pricing/)
+
+> [!TIP]
+> Set a quota for the API key you are using to keep costs manageable.
 
 ## Contributors
 
