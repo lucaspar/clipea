@@ -29,15 +29,7 @@ def setup() -> None:
         should_setup = "openai" not in keys
 
     if should_setup:
-<<<<<<< Updated upstream
-        print(
-||||||| Stash base
-        print(
-            "Get an OpenAI API key from: "
-            "https://platform.openai.com/account/api-keys",
-=======
         say(
->>>>>>> Stashed changes
             "Get an OpenAI API key from: https://platform.openai.com/account/api-keys",
         )
     else:
@@ -52,6 +44,14 @@ def clipea_execute_prompt(user_prompt: str, llm_model_name: str) -> None:
     Structure all user input as so:
 
         <user_input>
+        ~~~DATA~~~
+        <data>
+
+    Sends it to `llm`, stream the responses and prompt if the user wants
+    to execute them. If zsh extension is enabled, it will be put into
+    zsh's buffer
+
+    Args:
         ~~~DATA~~~
         <data>
 
