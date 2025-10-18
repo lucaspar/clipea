@@ -17,14 +17,17 @@ from clipea import ENV, utils
 def init_llm(llm_model: str = "") -> llm.Model:
     """Initialize base llm library with user's `llm_model`
     Args:
-        llm_model:  LLM model name (ex: "gpt-4o").
+        llm_model:  LLM model name (ex: "gpt-4.1").
     Returns:
         llm.Model
     """
     model = llm.get_model(llm_model)
 
     if model.needs_key:
-        model.key = llm.get_key("", model.needs_key, model.key_env_var)
+        model.key = llm.get_key(
+            explicit_key="", key_alias=model.needs_key, env_var=model.key_env_var
+        )
+    log.debug(f"Using model: {model}")
     return model
 
 
@@ -68,9 +71,9 @@ def stream_commands(response: llm.Response, command_prefix: str = "") -> None:
             log.debug("Adding to command list: ", cmd_to_add)
             approved_cmd_list += cmd_to_add + os.linesep
 
-    print(command_prefix, end="")
+    utils.say(command_prefix, end="")
     for chunk in response:
-        print(chunk, end="", flush=True)
+        utils.say(chunk, prefix="", end="", flush=True)
         command += chunk
 
         if (new_line_pos := command.find(os.linesep)) == -1:
@@ -79,6 +82,8 @@ def stream_commands(response: llm.Response, command_prefix: str = "") -> None:
             process_command()
         else:
             command = ""
+
+    print()
 
     # llm's CLI put a line feed manually to its response, but not its library;
     #   we have to do this to manage the case where the model returns a

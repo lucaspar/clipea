@@ -21,7 +21,7 @@ log.add(sys.stderr, level="INFO")
 class ClipeaConfig:
     """Configuration class for clipea"""
 
-    llm_model_name: str = "gpt-4o"
+    llm_model_name: str = ""  # uses default set by `llm models default <model>`
     command_prefix: str = "🟢 "
 
 

@@ -7,8 +7,10 @@ import sys
 from typing import TYPE_CHECKING
 
 from llm import UnknownModelError
+from loguru import logger as log
 
 from clipea import CLIPEA_DIR, CONFIG, ENV, SYSTEM_PROMPT, cli
+from clipea.utils import say
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -27,11 +29,19 @@ def setup() -> None:
         should_setup = "openai" not in keys
 
     if should_setup:
+<<<<<<< Updated upstream
         print(
+||||||| Stash base
+        print(
+            "Get an OpenAI API key from: "
+            "https://platform.openai.com/account/api-keys",
+=======
+        say(
+>>>>>>> Stashed changes
             "Get an OpenAI API key from: https://platform.openai.com/account/api-keys",
         )
     else:
-        print("An OpenAI key is already set-up, proceed if you want to change it.")
+        say("An OpenAI key is already set-up, proceed if you want to change it.")
     # trigger key setting (llm uses Click)
     llm.cli.keys_set()  # pylint: disable=no-value-for-parameter
 
@@ -56,6 +66,7 @@ def clipea_execute_prompt(user_prompt: str, llm_model_name: str) -> None:
     from clipea import clipea_llm  # pylint: disable=import-outside-toplevel
 
     try:
+        log.debug(llm_model_name)
         model: Model = clipea_llm.init_llm(llm_model_name)
     except UnknownModelError as e:
         sys.exit(str(e))
@@ -69,7 +80,7 @@ def clipea_execute_prompt(user_prompt: str, llm_model_name: str) -> None:
 
 
 def alias() -> None:
-    """Gives zsh's alias (automatic command buffering) commands to the user"""
+    """Gives zsh or bash alias (automatic command buffering) commands to the user"""
     shell: str = ENV["shell"]
     if shell in ("zsh", "-zsh"):
         command: str = f"alias '??'='source {CLIPEA_DIR}/clipea.zsh'"
@@ -91,6 +102,6 @@ def alias() -> None:
         )
         clipea_execute_prompt(user_prompt, llm_model_name=CONFIG.llm_model_name)
     else:
-        print(
+        say(
             f"`alias` feature is only for zsh and bash users. Current shell = {shell}",
         )

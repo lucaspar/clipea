@@ -15,7 +15,15 @@ def anystr_force_str(value: AnyStr) -> str:
     Returns:
         str: AnyStr's bytes decoded to str or it's str
     """
-    return value.decode("utf-8") if isinstance(value, bytes) else value
+    if isinstance(value, bytes):
+        return value.decode("utf-8")
+    if isinstance(value, bytearray):
+        return bytes(value).decode("utf-8")
+    if isinstance(value, memoryview):
+        return value.tobytes().decode("utf-8")
+    if isinstance(value, str):
+        return value
+    raise TypeError(f"Unsupported type for anystr_force_str: {type(value)}")
 
 
 def read_file(file_path: Path) -> str:
@@ -60,6 +68,14 @@ def get_config_file_with_fallback(
     if (config_path_obj := home / ".config" / appname / filename).exists():
         return config_path_obj
     return fallback / filename
+
+
+def say(message: str, *, prefix: bool | str = "", **kwargs) -> None:
+    """Wrapper for user messages."""
+    if prefix:
+        print(f"{prefix}{message}", **kwargs)
+    else:
+        print(message, **kwargs)
 
 
 def write_to_file(file_path: Path, content: AnyStr, mode: str = "w") -> None:

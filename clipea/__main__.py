@@ -4,6 +4,7 @@ import shutil
 import sys
 
 from clipea import router
+from clipea.utils import say
 
 
 def clipea_main() -> None:
@@ -21,7 +22,7 @@ def clipea_main() -> None:
     try:
         router.commands_router(user_prompt)
     except KeyboardInterrupt:
-        print("\nAborted!")
+        say("\nAborted!")
         sys.exit(1)
 
 
