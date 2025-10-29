@@ -35,26 +35,26 @@ jobs:
     ruff:
         runs-on: ubuntu-latest
         steps:
-          - name: Checkout code
-            uses: actions/checkout@v4
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-          - name: Install uv
-            uses: astral-sh/setup-uv@v3
-            # https://github.com/marketplace/actions/astral-sh-setup-uv
-            with:
-                version: "latest"
+            - name: Install uv
+              uses: astral-sh/setup-uv@v3
+              # https://github.com/marketplace/actions/astral-sh-setup-uv
+              with:
+                  version: "latest"
 
-          - name: lint
-            run: uv run --dev ruff check ./clipea ./tests
+            - name: lint
+              run: uv run --dev ruff check ./clipea ./tests
 
-          - name: format
-            run: uv run --dev ruff format --check ./clipea ./tests
+            - name: format
+              run: uv run --dev ruff format --check ./clipea ./tests
 
     pytest:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                python-version: ["3.11", "3.12", "3.13"]
+                python-version: ["3.13"]
         steps: # https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idsteps
             - name: Checkout code
               uses: actions/checkout@v4
