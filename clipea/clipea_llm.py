@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 
 import llm
-import llm.cli
 from loguru import logger as log
 
 import clipea.cli
@@ -21,9 +20,11 @@ def init_llm(llm_model: str = "") -> llm.Model:
     Returns:
         llm.Model
     """
+    log.debug(f"Initializing llm with model: {llm_model}")
     model = llm.get_model(llm_model)
 
     if model.needs_key:
+        log.debug(f"getting key for model.needs_key: {model.needs_key}")
         model.key = llm.get_key(
             explicit_key="", key_alias=model.needs_key, env_var=model.key_env_var
         )

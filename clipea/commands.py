@@ -66,7 +66,7 @@ def clipea_execute_prompt(user_prompt: str, llm_model_name: str) -> None:
     from clipea import clipea_llm  # pylint: disable=import-outside-toplevel
 
     try:
-        log.debug(llm_model_name)
+        log.debug(f"{llm_model_name=}")
         model: Model = clipea_llm.init_llm(llm_model_name)
     except UnknownModelError as e:
         sys.exit(str(e))

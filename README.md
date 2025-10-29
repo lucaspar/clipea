@@ -56,7 +56,7 @@ Edit, then press ENTER to run: openssl rand -hex 32
     # install anthropic models
     llm install llm-anthropic
     llm models | less                       # choose a model
-    llm models default claude-4-sonnet
+    llm models default claude-sonnet-4.5
     llm keys set anthropic
     # paste your anthropic key from https://console.anthropic.com/settings/keys
     ```

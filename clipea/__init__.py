@@ -14,7 +14,7 @@ from clipea import cli, utils
 
 # set default log level to INFO
 log.remove()
-log.add(sys.stderr, level="INFO")
+log.add(sys.stderr, level="DEBUG")
 
 
 @dataclass
